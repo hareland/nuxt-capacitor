@@ -17,6 +17,7 @@
     "module.ts",
     "server",
     "runtime",
+    "utils",
     "README.md"
   ],
   "dependencies": {
