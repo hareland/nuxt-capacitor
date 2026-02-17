@@ -1,12 +1,12 @@
 {
   "name": "nuxt-capacitor",
   "description": "A layer for building nuxt apps with capacitor",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "type": "module",
   "main": "./nuxt.config.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hareland/simple-content-site.git"
+    "url": "git+https://github.com/hareland/nuxt-capacitor.git"
   },
   "private": false,
   "license": "MIT",
