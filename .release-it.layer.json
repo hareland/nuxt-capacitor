@@ -7,7 +7,8 @@
     "after:release": "rm ./layer/README.md"
   },
   "npm": {
-    "publish": false
+    "publish": false,
+    "tag": "${version.includes('-') ? version.split('-')[1].split('.')[0] : 'latest'}"
   },
   "plugins": {
     "@release-it/bumper": {
