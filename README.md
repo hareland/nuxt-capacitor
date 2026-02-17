@@ -8,6 +8,16 @@ generation - so you can focus on building, not configuring.
 
 ---
 
+
+## Table of Contents
+- [Prerequisites](#prerequisites)
+- [Install](#install)
+- [Usage](#usage)
+- [How It Works](#how-it-works)
+- [Setting Up Mobile Platforms](#setting-up-mobile-platforms)
+- [Workflow](#workflow)
+- [Config Reference](#config-reference)
+
 ## Prerequisites
 
 Before using this module, make sure you have the following installed in your project:
@@ -39,25 +49,31 @@ The easiest way is via the Nuxt CLI:
 pnpx nuxi@latest module add nuxt-capacitor
 ```
 
-Or by creating a new Nuxt app from the starter template:
+### Other install methods
 
-```bash
-pnpm create nuxt@latest -t github:hareland/nuxt-capacitor/.starter
-```
+<details>
+<summary>From starter template</summary>
+  
+   ```bash
+   pnpm create nuxt@latest -t github:hareland/nuxt-capacitor/.starter
+   ```
+</details>
 
-Or install manually:
+<details>
+<summary>Install manually</summary>
 
-```bash
-pnpm i nuxt-capacitor
-```
-
-Then add it to your `nuxt.config.ts`:
-
-```ts
-export default defineNuxtConfig({
-  modules: ['nuxt-capacitor'],
-})
-```
+   ```bash
+   pnpm i nuxt-capacitor
+   ```
+   
+   Then add it to your `nuxt.config.ts`:
+   
+   ```ts
+   export default defineNuxtConfig({
+     modules: ['nuxt-capacitor'],
+   })
+   ```
+</details>
 
 ---
 
@@ -80,36 +96,40 @@ export default defineNuxtConfig({
 
 ## How It Works
 
-### Development (`nuxt dev`)
+<details>
+<summary>Details</summary>
+   
+   ### Development (`nuxt dev`)
+   
+   When you run `nuxt dev`, the module:
+   
+   1. **Runs `nuxt generate`** to produce the initial static assets Capacitor needs
+   2. **Runs `npx cap sync`** to copy those assets into your native projects
+   3. **Injects your dev server URL** into `capacitor.config.ts` so the native app connects to your local dev server with
+      HMR
+   
+   You don't need to manually run `generate` or `cap sync` to get started - it's all handled on startup.
+   
+   ### Production (`nuxt build`)
+   
+   After the build completes, the module automatically runs `npx cap sync` once the public assets are ready (on the
+   `nitro:build:public-assets` hook).
+   
+   ### Config file
+   
+   On first run, if no `capacitor.config.ts` exists in your project root, the module creates one for you:
+   
+   ```ts
+   import {defineCapacitorConfig} from './.nuxt/capacitor.mjs';
+   
+   export default defineCapacitorConfig({
+     // Add your overrides here, or configure via nuxt.config.ts > capacitor: {}
+   });
+   ```
+   
+   This file is type-safe and merges your overrides over the defaults set in `nuxt.config.ts`.
 
-When you run `nuxt dev`, the module:
-
-1. **Runs `nuxt generate`** to produce the initial static assets Capacitor needs
-2. **Runs `npx cap sync`** to copy those assets into your native projects
-3. **Injects your dev server URL** into `capacitor.config.ts` so the native app connects to your local dev server with
-   HMR
-
-You don't need to manually run `generate` or `cap sync` to get started - it's all handled on startup.
-
-### Production (`nuxt build`)
-
-After the build completes, the module automatically runs `npx cap sync` once the public assets are ready (on the
-`nitro:build:public-assets` hook).
-
-### Config file
-
-On first run, if no `capacitor.config.ts` exists in your project root, the module creates one for you:
-
-```ts
-import {defineCapacitorConfig} from './.nuxt/capacitor.mjs';
-
-export default defineCapacitorConfig({
-  // Add your overrides here, or configure via nuxt.config.ts > capacitor: {}
-});
-```
-
-This file is type-safe and merges your overrides over the defaults set in `nuxt.config.ts`.
-
+</details>
 ---
 
 ## Setting Up Mobile Platforms
