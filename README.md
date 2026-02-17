@@ -1,8 +1,10 @@
 # nuxt-capacitor
 
-A Nuxt module / layer that automatically generates `capacitor.config.ts` and injects your dev server URL — so you can focus on building, not configuring.
+A Nuxt module that automatically generates `capacitor.config.ts`, injects your dev server URL, and handles asset
+generation — so you can focus on building, not configuring.
 
-> **Note:** This module does not install Capacitor or its platform dependencies. You'll need to set those up yourself — see [Prerequisites](#prerequisites) below.
+> **Note:** This module does not install Capacitor or its platform dependencies. You'll need to set those up yourself —
+> see [Prerequisites](#prerequisites) below.
 
 ---
 
@@ -23,6 +25,7 @@ pnpm add @capacitor/android # Android support
 ```
 
 You'll also need:
+
 - [Xcode](https://developer.apple.com/xcode/) (for iOS builds, macOS only)
 - [Android Studio](https://developer.android.com/studio) (for Android builds)
 
@@ -36,7 +39,8 @@ The easiest way is via the Nuxt CLI:
 pnpx nuxi@latest module add nuxt-capacitor
 ```
 
-Or by creating a new nuxt app:
+Or by creating a new Nuxt app from the starter template:
+
 ```bash
 pnpm create nuxt@latest -t github:hareland/nuxt-capacitor/.starter
 ```
@@ -72,34 +76,48 @@ export default defineNuxtConfig({
 })
 ```
 
-> **Dev server injection:** When you run `nuxt dev`, the module automatically injects your local dev server URL into `capacitor.config.ts`, so your native app always points to the right place during development.
-
 ---
 
 ## How It Works
 
-On startup, the module:
+### Development (`nuxt dev`)
 
-1. **Generates `capacitor.config.ts`** in your project root (if one doesn't already exist)
-2. **Injects the dev server URL** into the config when running in dev mode
+When you run `nuxt dev`, the module:
 
-You don't need to manually manage the server URL — it's handled automatically.
+1. **Runs `nuxt generate`** to produce the initial static assets Capacitor needs
+2. **Runs `npx cap sync`** to copy those assets into your native projects
+3. **Injects your dev server URL** into `capacitor.config.ts` so the native app connects to your local dev server with
+   HMR
+
+You don't need to manually run `generate` or `cap sync` to get started — it's all handled on startup.
+
+### Production (`nuxt build`)
+
+After the build completes, the module automatically runs `npx cap sync` once the public assets are ready (on the
+`nitro:build:public-assets` hook).
+
+### Config file
+
+On first run, if no `capacitor.config.ts` exists in your project root, the module creates one for you:
+
+```ts
+import {defineCapacitorConfig} from './.nuxt/capacitor.mjs';
+
+export default defineCapacitorConfig({
+  // Add your overrides here, or configure via nuxt.config.ts > capacitor: {}
+});
+```
+
+This file is type-safe and merges your overrides over the defaults set in `nuxt.config.ts`.
 
 ---
 
 ## Setting Up Mobile Platforms
 
-Once the module is installed and your `capacitor.config.ts` is in place, initialize your mobile platforms.
-
-### iOS
+Once the module is installed and your `capacitor.config.ts` is in place, initialize your mobile platforms:
 
 ```bash
 npx cap add ios
-```
-
-### Android
-
-```bash
 npx cap add android
 ```
 
@@ -107,27 +125,32 @@ npx cap add android
 
 ## Workflow
 
-### Build & Sync
+### Development
 
-Generate your Nuxt app and sync assets to the native projects:
+Start the dev server — asset generation and sync happen automatically:
 
 ```bash
-pnpm generate && npx cap sync
+pnpm dev
 ```
 
-### Live Reload
- To make HMR work, you need to make sure the dev server is accessible over the network:
+To make HMR accessible on device or simulator, expose the dev server over the network:
+
 ```bash
 pnpm dev --host=0.0.0.0
 ```
 
-> Run this after any change to your web app to keep the native projects up to date.
-
 ### Run on Device / Simulator
-> Note: if you add `--live-reload` to the followign commands, it will work with nuxt HMR.
+
 ```bash
 npx cap run ios
 npx cap run android
+```
+
+Pass `--live-reload` to enable Nuxt HMR on device:
+
+```bash
+npx cap run ios --live-reload
+npx cap run android --live-reload
 ```
 
 Or open the native IDE directly for more control:
@@ -141,16 +164,36 @@ npx cap open android # Opens Android Studio
 
 ## Config Reference
 
-All options are passed under the `capacitor.config` key and map directly to [Capacitor's configuration options](https://capacitorjs.com/docs/config).
+| Option     | Type              | Default   | Description                                                                                                 |
+|------------|-------------------|-----------|-------------------------------------------------------------------------------------------------------------|
+| `autoSync` | `boolean`         | `true`    | Runs `nuxt generate` + `npx cap sync` automatically on dev start and after production builds                |
+| `config`   | `CapacitorConfig` | See below | Passed directly to Capacitor — supports all [Capacitor config options](https://capacitorjs.com/docs/config) |
+
+Default `config` values set by the module:
+
+```ts
+export default {
+  appId: 'com.example.app',
+  appName: 'Nuxt Capacitor',
+  webDir: '<rootDir>/.output/public', // auto-set from Nuxt output dir
+  // In dev mode, also injects:
+  server: {
+    url: '<devServer.url>',
+    cleartext: true,
+  }
+}
+```
+
+Full example:
 
 ```ts
 export default defineNuxtConfig({
   capacitor: {
+    autoSync: true,
     config: {
-      appId: 'com.example.myapp',   // Unique app identifier (reverse domain)
-      appName: 'My App',            // Display name shown on device
-      webDir: '.output/public',     // Nuxt output directory (auto-set)
-      // ...any other Capacitor config options
+      appId: 'com.example.myapp',
+      appName: 'My App',
+      // webDir is set automatically — no need to configure
     },
   },
 })
