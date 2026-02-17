@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.1](https://github.com/hareland/nuxt-capacitor/compare/v0.1.0...v0.1.1) (2026-02-17)
+
+### Features
+
+* **module:** add autoSync option with `npx cap sync` integration and improve logging ([a15a8f5](https://github.com/hareland/nuxt-capacitor/commit/a15a8f576ac150c30d93a0c41d71b6d4b8f982d1))
+
 ## [0.1.0](https://github.com/hareland/nuxt-capacitor/compare/v0.0.5...v0.1.0) (2026-02-17)
 
 ### Features
