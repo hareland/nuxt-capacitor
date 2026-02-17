@@ -36,6 +36,11 @@ The easiest way is via the Nuxt CLI:
 pnpx nuxi@latest module add nuxt-capacitor
 ```
 
+Or by creating a new nuxt app:
+```bash
+pnpm create nuxt@latest -t github:hareland/nuxt-capacitor/.starter
+```
+
 Or install manually:
 
 ```bash
@@ -110,10 +115,16 @@ Generate your Nuxt app and sync assets to the native projects:
 pnpm generate && npx cap sync
 ```
 
+### Live Reload
+ To make HMR work, you need to make sure the dev server is accessible over the network:
+```bash
+pnpm dev --host=0.0.0.0
+```
+
 > Run this after any change to your web app to keep the native projects up to date.
 
 ### Run on Device / Simulator
-
+> Note: if you add `--live-reload` to the followign commands, it will work with nuxt HMR.
 ```bash
 npx cap run ios
 npx cap run android
