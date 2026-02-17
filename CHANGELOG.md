@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.0](https://github.com/hareland/nuxt-capacitor/compare/v0.0.5...v0.1.0) (2026-02-17)
+
+### Features
+
+* starter ([5021165](https://github.com/hareland/nuxt-capacitor/commit/5021165a75084195e3d4603c9880c4776e2ac206))
+
 ## [0.0.5](https://github.com/hareland/nuxt-capacitor/compare/v0.0.4...v0.0.5) (2026-02-17)
 
 ## [0.0.4](https://github.com/hareland/nuxt-capacitor/compare/v0.0.3...v0.0.4) (2026-02-17)
