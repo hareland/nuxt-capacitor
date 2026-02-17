@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.3](https://github.com/hareland/nuxt-capacitor/compare/v0.1.2...v0.1.3) (2026-02-17)
+
+### Features
+
+* **build:** Ensure generating capacitor.mjs on dev and build ([0ca273b](https://github.com/hareland/nuxt-capacitor/commit/0ca273b23a6e9c98f1ba2e219f19ba7b1208565b))
+
 ## [0.1.2](https://github.com/hareland/nuxt-capacitor/compare/v0.1.1...v0.1.2) (2026-02-17)
 
 ### Features
