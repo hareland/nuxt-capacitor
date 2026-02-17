@@ -3,6 +3,7 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "prepare": "nuxt prepare",
     "dev": "nuxt dev --extends nuxt-capacitor",
     "build": "nuxt build --extends nuxt-capacitor",
     "generate": "nuxt generate",
