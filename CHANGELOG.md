@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/hareland/nuxt-capacitor/compare/v0.1.1...v0.1.2) (2026-02-17)
+
+### Features
+
+* **config:** add devServer.host warnings and update static page generation command ([e58ea22](https://github.com/hareland/nuxt-capacitor/commit/e58ea2269451d3ec67b4e48472e44f87d5bfeb4f))
+* **config:** warn if ios config is missing during build and update .gitignore ([ea36111](https://github.com/hareland/nuxt-capacitor/commit/ea36111ed80512022c242703ce076aba0516627a))
+
 ## [0.1.1](https://github.com/hareland/nuxt-capacitor/compare/v0.1.0...v0.1.1) (2026-02-17)
 
 ### Features

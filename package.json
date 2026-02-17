@@ -1,7 +1,7 @@
 {
   "name": "nuxt-capacitor-workspace",
   "description": "A layer for building nuxt apps with capacitor",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/hareland/nuxt-capacitor.git"
