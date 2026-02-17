@@ -7,7 +7,9 @@
     "after:release": "rm ./layer/README.md"
   },
   "npm": {
-    "publish": false
+    "publish": true,
+    "tag": "alpha",
+    "publishPath": "./layer"
   },
   "plugins": {
     "@release-it/bumper": {

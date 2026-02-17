@@ -13,7 +13,7 @@
     "dev": "pnpm dev --filter playground",
     "lint": "eslint .",
     "typecheck": "nuxt typecheck layer",
-    "layer:release": "release-it --config .release-it.layer.json && cd layer && npm publish --tag alpha",
+    "layer:release": "release-it --config .release-it.layer.json",
     "release": "pnpm run layer:release && release-it"
   },
   "devDependencies": {
