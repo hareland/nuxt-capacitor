@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.0.3](https://github.com/hareland/nuxt-capacitor/compare/v0.0.2...v0.0.3) (2026-02-17)
+
+### Features
+
+* release ([a0830e2](https://github.com/hareland/nuxt-capacitor/commit/a0830e2082e7004134cba8151a9854ae068c2d29))
+* release ([3985d75](https://github.com/hareland/nuxt-capacitor/commit/3985d75c4bd7ad63da36e8aaa9bfba806901b86c))
+* release ([49ed190](https://github.com/hareland/nuxt-capacitor/commit/49ed1902d63a294442221c68cbe9b5221b42c114))
+
 ## [0.0.2](https://github.com/hareland/nuxt-capacitor/compare/v0.0.1...v0.0.2) (2026-02-17)
 
 ### Features
