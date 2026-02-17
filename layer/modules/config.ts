@@ -42,7 +42,6 @@ export default defineNuxtModule<NuxtCapacitorOptions>({
       throw new Error('@capacitor/cli is not installed.')
     }
 
-    // Merge module defaults under nuxt.config capacitor options
     nuxt.options.capacitor = defu(nuxt.options.capacitor, _options)
 
     // Inject dev server
@@ -60,12 +59,10 @@ export default defineNuxtModule<NuxtCapacitorOptions>({
       webDir: withoutTrailingSlash(nuxt.options.rootDir) + '/.output/public',
     })
 
-    // --- Step 2: Check for ROOT/capacitor.config.ts ---
     const userConfigPath = join(rootDir, 'capacitor.config.ts')
     const userConfigExists = existsSync(userConfigPath)
 
     if (!userConfigExists && thisModuleDir !== rootDir) {
-      // Write a default capacitor.config.ts for the user
       const defaultUserConfig = [
         `import { defineCapacitorConfig } from './.nuxt/capacitor.mjs';`,
         ``,
@@ -78,8 +75,6 @@ export default defineNuxtModule<NuxtCapacitorOptions>({
       console.info('[nuxt-capacitor] Created default capacitor.config.ts in project root.')
     }
 
-    // --- Step 4: Re-write .nuxt/capacitor.mjs with the fully merged config ---
-    // Now that user config has been merged in, update the template with final values
     addTemplate({
       filename: 'capacitor.mjs',
       write: true,
