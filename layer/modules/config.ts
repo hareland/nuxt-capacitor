@@ -37,6 +37,16 @@ export default defineNuxtModule<NuxtCapacitorOptions>({
   async setup(_options, nuxt) {
     const logger = consola.create({ defaults: { tag: name } })
 
+    if (nuxt.options.dev) {
+      const devHost = nuxt.options.devServer.host
+      if (!devHost) {
+        logger.warn('devServer.host is not set. This may cause issues with Capacitor. set with --host=0.0.0.0')
+      }
+      else if (devHost !== '0.0.0.0') {
+        logger.warn('devServer.host is not set to 0.0.0.0. This may cause issues with Capacitor. Set with --host=0.0.0.0')
+      }
+    }
+
     const thisModuleDir = join(createResolver(import.meta.url).resolve('.'), '..')
     const rootDir = nuxt.options.rootDir
 
@@ -137,8 +147,8 @@ export default defineNuxtModule<NuxtCapacitorOptions>({
         nuxt.hook('ready', async () => {
           logger.info('🔨 Running generate for initial Capacitor assets...')
           try {
-            execSync('npx nuxt generate', { cwd: rootDir, stdio: 'inherit' })
-            logger.success('Generate complete')
+            execSync('npx nuxt build --prerender', { cwd: rootDir, stdio: 'ignore' })
+            logger.success(`Generated statis pages into .output/public`)
             await capSync('ready')()
           }
           catch (err) {
