@@ -14,6 +14,7 @@ export default createConfigForNuxt({
   files: [
     'cli/**/*.ts',
   ],
+  ignores: ['playground/ios/**'],
 }).append(
   {
     rules: {
