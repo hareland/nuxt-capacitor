@@ -115,21 +115,24 @@ export default defineNuxtConfig({
    After the build completes, the module automatically runs `npx cap sync` once the public assets are ready (on the
    `nitro:build:public-assets` hook).
    
-   ### Config file
-   
-   On first run, if no `capacitor.config.ts` exists in your project root, the module creates one for you:
-   
-   ```ts
-   import {defineCapacitorConfig} from './.nuxt/capacitor.mjs';
-   
-   export default defineCapacitorConfig({
-     // Add your overrides here, or configure via nuxt.config.ts > capacitor: {}
-   });
-   ```
-   
-   This file is type-safe and merges your overrides over the defaults set in `nuxt.config.ts`.
-
 </details>
+
+---
+
+## Config file
+
+On first run, if no `capacitor.config.ts` exists in your project root, the module creates one for you:
+
+```ts
+import {defineCapacitorConfig} from './.nuxt/capacitor.mjs';
+
+export default defineCapacitorConfig({
+ // Add your overrides here, or configure via nuxt.config.ts > capacitor: {}
+});
+```
+
+This file is type-safe and merges your overrides over the defaults set in `nuxt.config.ts`.
+
 ---
 
 ## Setting Up Mobile Platforms
