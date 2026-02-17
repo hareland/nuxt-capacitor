@@ -11,7 +11,10 @@
     "prepare": "nuxt prepare layer",
     "dev:prepare":"nuxt prepare playground --extends ../layer",
     "dev": "pnpm dev --filter playground",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "typecheck": "nuxt typecheck layer",
+    "layer:release": "release-it --config .release-it.layer.json && cd layer && npm publish",
+    "release": "pnpm run layer:release && release-it"
   },
   "devDependencies": {
     "@nuxt/eslint": "^1.15.1",
