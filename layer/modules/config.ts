@@ -57,7 +57,7 @@ export default defineNuxtModule<NuxtCapacitorOptions>({
 
     // Fallback webDir
     nuxt.options.capacitor.config = defu(nuxt.options.capacitor.config, {
-      webDir: withoutTrailingSlash(nuxt.options.buildDir) + '/public',
+      webDir: withoutTrailingSlash(nuxt.options.rootDir) + '/.output/public',
     })
 
     // --- Step 2: Check for ROOT/capacitor.config.ts ---
