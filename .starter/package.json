@@ -1,6 +1,7 @@
 {
   "name": "nuxt-capacitor-app",
   "type": "module",
+  "license": "MIT",
   "private": true,
   "scripts": {
     "build": "nuxt build",
