@@ -1,7 +1,7 @@
 {
   "name": "nuxt-capacitor-workspace",
   "description": "A layer for building nuxt apps with capacitor",
-  "version": "0.0.0-alpha.1",
+  "version": "0.0.0-alpha.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/hareland/nuxt-capacitor.git"
@@ -9,11 +9,11 @@
   "private": false,
   "scripts": {
     "prepare": "nuxt prepare layer",
-    "dev:prepare":"nuxt prepare playground --extends ../layer",
+    "dev:prepare": "nuxt prepare playground --extends ../layer",
     "dev": "pnpm dev --filter playground",
     "lint": "eslint .",
     "typecheck": "nuxt typecheck layer",
-    "layer:release": "release-it --config .release-it.layer.json && cd layer && npm publish",
+    "layer:release": "release-it --config .release-it.layer.json && cd layer && npm publish --tag alpha",
     "release": "pnpm run layer:release && release-it"
   },
   "devDependencies": {
