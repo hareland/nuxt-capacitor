@@ -1,9 +1,9 @@
 # nuxt-capacitor
 
 A Nuxt module that automatically generates `capacitor.config.ts`, injects your dev server URL, and handles asset
-generation — so you can focus on building, not configuring.
+generation - so you can focus on building, not configuring.
 
-> **Note:** This module does not install Capacitor or its platform dependencies. You'll need to set those up yourself —
+> **Note:** This module does not install Capacitor or its platform dependencies. You'll need to set those up yourself -
 > see [Prerequisites](#prerequisites) below.
 
 ---
@@ -89,7 +89,7 @@ When you run `nuxt dev`, the module:
 3. **Injects your dev server URL** into `capacitor.config.ts` so the native app connects to your local dev server with
    HMR
 
-You don't need to manually run `generate` or `cap sync` to get started — it's all handled on startup.
+You don't need to manually run `generate` or `cap sync` to get started - it's all handled on startup.
 
 ### Production (`nuxt build`)
 
@@ -127,7 +127,7 @@ npx cap add android
 
 ### Development
 
-Start the dev server — asset generation and sync happen automatically:
+Start the dev server - asset generation and sync happen automatically:
 
 ```bash
 pnpm dev
@@ -167,7 +167,7 @@ npx cap open android # Opens Android Studio
 | Option     | Type              | Default   | Description                                                                                                 |
 |------------|-------------------|-----------|-------------------------------------------------------------------------------------------------------------|
 | `autoSync` | `boolean`         | `true`    | Runs `nuxt generate` + `npx cap sync` automatically on dev start and after production builds                |
-| `config`   | `CapacitorConfig` | See below | Passed directly to Capacitor — supports all [Capacitor config options](https://capacitorjs.com/docs/config) |
+| `config`   | `CapacitorConfig` | See below | Passed directly to Capacitor - supports all [Capacitor config options](https://capacitorjs.com/docs/config) |
 
 Default `config` values set by the module:
 
@@ -193,7 +193,7 @@ export default defineNuxtConfig({
     config: {
       appId: 'com.example.myapp',
       appName: 'My App',
-      // webDir is set automatically — no need to configure
+      // webDir is set automatically - no need to configure
     },
   },
 })
