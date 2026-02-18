@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.5](https://github.com/hareland/nuxt-capacitor/compare/v0.1.4...v0.1.5) (2026-02-18)
+
+### Features
+
+* **config:** add Electron support to Capacitor config ([19142dd](https://github.com/hareland/nuxt-capacitor/commit/19142dd511498719f4cbf21dc796beae23a2bdb0))
+* **config:** add server options and extend Capacitor config with Electron support ([8041948](https://github.com/hareland/nuxt-capacitor/commit/8041948c517013be4122730b9a337e3a14ebffd4))
+* **config:** extend Capacitor options with Electron support and improve sync logic ([4f44527](https://github.com/hareland/nuxt-capacitor/commit/4f44527bc9b34c0e1164942c08f0b5200bd470d2))
+* **electron:** initial ([d48f8f4](https://github.com/hareland/nuxt-capacitor/commit/d48f8f4ad799d10b634063d1f82cb652dcae99a5))
+* **electron:** lint ([14210f5](https://github.com/hareland/nuxt-capacitor/commit/14210f53ad6c5a09225c32fdfcdfcfcdfc5f5807))
+* **scripts:** add command for syncing Electron with Capacitor ([69612bd](https://github.com/hareland/nuxt-capacitor/commit/69612bdf728023458e91438b3e6a83b19517cc7a))
+* **ui:** switch root element to <main> and add TypeScript setup ([a8b6d02](https://github.com/hareland/nuxt-capacitor/commit/a8b6d02cf78dc37cf1a236d25bc9a0206dd35ffc))
+
 ## [0.1.4](https://github.com/hareland/nuxt-capacitor/compare/v0.1.3...v0.1.4) (2026-02-18)
 
 ### Features
