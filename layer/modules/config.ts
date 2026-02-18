@@ -18,7 +18,7 @@ import {
 interface NuxtCapacitorOptions {
   autoSync?: boolean
   output?: 'json' | 'ts'
-  config?: CapacitorConfig
+  config?: CapacitorConfig & { electron?: { customUrlScheme?: string, trayIconAndMenuEnabled?: boolean, backgroundColor?: string } }
 }
 
 declare module '@nuxt/schema' {
@@ -69,7 +69,7 @@ export default defineNuxtModule<NuxtCapacitorOptions>({
       throw new Error('@capacitor/cli is not installed.')
     }
 
-    nuxt.options.capacitor = defu(_options, nuxt.options.capacitor)
+    nuxt.options.capacitor = defu(nuxt.options.capacitor, _options)
 
     // Inject dev server
     if (nuxt.options.dev) {
@@ -115,8 +115,13 @@ export default defineNuxtModule<NuxtCapacitorOptions>({
           return
         }
         try {
+          let syncMessage = `npx cap sync`
           execSync('npx cap sync', { stdio: 'inherit', cwd: rootDir })
-          logger.success(`npx cap sync completed on ${scope}.`)
+          if (existsSync(join(rootDir, 'electron/package.json'))) {
+            execSync('npx cap sync electron', { stdio: 'inherit', cwd: rootDir })
+            syncMessage = ` && npx cap sync electron`
+          }
+          logger.success(`${syncMessage} completed on ${scope}.`)
         }
         catch (err) {
           logger.error(err)
@@ -125,12 +130,14 @@ export default defineNuxtModule<NuxtCapacitorOptions>({
 
       //
       if (nuxt.options.dev) {
-        nuxt.hook('listen', capSync('listen'))
+        // nuxt.hook('listen', capSync('listen'))
         nuxt.hook('build:done', async () => {
           logger.info('🔨 Running generate for initial Capacitor assets...')
           try {
-            execSync('npx nuxt build --prerender', { cwd: rootDir, stdio: 'ignore' })
-            logger.success(`Generated static pages into ${distPath}`)
+            if (!existsSync(join(rootDir, distPath, 'index.html'))) {
+              execSync('npx nuxt generate', { cwd: rootDir, stdio: 'ignore' })
+              logger.success(`Generated static pages into ${distPath}`)
+            }
             await capSync('build:done')()
           }
           catch (err) {
