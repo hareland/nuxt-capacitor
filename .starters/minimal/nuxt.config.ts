@@ -5,9 +5,8 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   capacitor: {
     config: {
-      appId: 'com.text.app',
-      appName: 'Text App',
-      webDir: '.output/public',
+      appId: process.env.CAPACITOR_APP_ID || 'com.example.nuxtcapacitorminimal',
+      appName: process.env.CAPACITOR_APP_NAME || 'Nuxt Capacitor',
     },
   },
 })

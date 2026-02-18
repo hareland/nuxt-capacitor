@@ -11,8 +11,7 @@
     "postinstall": "nuxt prepare",
     "mobile": "nuxt generate && cap sync",
     "mobile:ios": "pnpm mobile && cap open ios",
-    "mobile:android": "pnpm mobile && cap open android",
-    "cap:sync:after": "npx cap sync electron"
+    "mobile:android": "pnpm mobile && cap open android"
   },
   "dependencies": {
     "@capacitor-community/electron": "^5.0.1",

@@ -1,0 +1,31 @@
+{
+  "name": "nuxt-capacitor-minimal-starter",
+  "type": "module",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build --prerender",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "prepare": "nuxt prepare",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "clean": "git clean -fd"
+  },
+  "dependencies": {
+    "@capacitor/core": "^8.1.0",
+    "nuxt": "^4.3.1",
+    "nuxt-capacitor": "latest",
+    "vue": "^3.5.28",
+    "vue-router": "^4.6.4"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.1.0",
+    "@types/node": "^24.1.0",
+    "@nuxt/eslint": "1.15.1",
+    "eslint": "^9.39.2",
+    "typescript": "^5.9.3"
+  }
+}

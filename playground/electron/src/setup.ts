@@ -83,7 +83,7 @@ export class ElectronCapacitorApp {
 
     // Setup our web app loader, this lets us load apps like react, vue, and angular without changing their build chains.
     this.loadWebApp = electronServe({
-      directory: join(app.getAppPath(), '..', '.output', 'public'),
+      directory: join(app.getAppPath(), 'app'),
       scheme: this.customScheme,
     })
   }

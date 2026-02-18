@@ -52,10 +52,16 @@ pnpx nuxi@latest module add nuxt-capacitor
 ### Other install methods
 
 <details>
-<summary>From starter template</summary>
+<summary>Starter templates</summary>
   
+   ### Minimal starter
    ```bash
-   pnpm create nuxt@latest -t github:hareland/nuxt-capacitor/.starter
+   pnpm create nuxt@latest -t github:hareland/nuxt-capacitor/.starters/minimal
+   ```
+    
+    ### [Konsta UI](https://konstaui.com/vue) starter
+   ```bash
+   pnpm create nuxt@latest -t github:hareland/nuxt-capacitor/.starters/konsta-ui
    ```
 </details>
 
