@@ -2,8 +2,7 @@ import { addTemplate, addTypeTemplate } from '@nuxt/kit'
 import type { Nuxt } from '@nuxt/schema'
 import type { CapacitorConfig } from '@capacitor/cli'
 import { join } from 'node:path'
-import { existsSync, writeFileSync, readFileSync } from 'node:fs'
-import { defu } from 'defu'
+import { existsSync, writeFileSync } from 'node:fs'
 
 const name = 'nuxt-capacitor'
 
