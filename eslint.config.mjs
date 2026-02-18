@@ -14,7 +14,7 @@ export default createConfigForNuxt({
   files: [
     'cli/**/*.ts',
   ],
-  ignores: ['playground/ios/**'],
+  ignores: ['playground/ios/**', 'playground/android/**', 'playground/electron/**'],
 }).append(
   {
     rules: {
