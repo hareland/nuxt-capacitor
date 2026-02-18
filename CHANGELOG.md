@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.4](https://github.com/hareland/nuxt-capacitor/compare/v0.1.3...v0.1.4) (2026-02-18)
+
+### Features
+
+* **module:** add utility functions and templates for Capacitor configuration ([e725007](https://github.com/hareland/nuxt-capacitor/commit/e72500723394e740b41310d34e9700e96e7dadb5))
+* **module:** enhance Capacitor config handling with extended output formats and streamlined utility functions ([a13c211](https://github.com/hareland/nuxt-capacitor/commit/a13c211036a5aafe1446b124cca05f2046acca19))
+
 ## [0.1.3](https://github.com/hareland/nuxt-capacitor/compare/v0.1.2...v0.1.3) (2026-02-17)
 
 ### Features
