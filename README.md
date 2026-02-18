@@ -121,19 +121,37 @@ export default defineNuxtConfig({
 
 ## Config file
 
-On first run, if no `capacitor.config.ts` exists in your project root, the module creates one for you:
+The module uses `capacitor.config.json` by default (preferred, since it requires no transpiling or build step).
 
-```ts
-import {defineCapacitorConfig} from './.nuxt/capacitor.mjs';
-
-export default defineCapacitorConfig({
- // Add your overrides here, or configure via nuxt.config.ts > capacitor: {}
-});
+On first run, if no config file exists in your project root, the module creates one for you:
+```json
+{
+  "appId": "com.example.app",
+  "appName": "Nuxt Capacitor",
+  "webDir": "<rootDir>/.output/public"
+}
 ```
 
-This file is type-safe and merges your overrides over the defaults set in `nuxt.config.ts`.
+This file is automatically kept in sync with your `nuxt.config.ts` capacitor settings on each build/run.
 
----
+If you prefer TypeScript, set `output: 'ts'` in your module config:
+```ts
+export default defineNuxtConfig({
+  capacitor: {
+    output: 'ts',
+  },
+})
+```
+
+This will generate a `capacitor.config.ts` instead:
+```ts
+import { defineCapacitorConfig } from './.nuxt/capacitor.mjs';
+
+export default defineCapacitorConfig({
+  // Add your overrides here, or configure via nuxt.config.ts > capacitor: {}
+});
+```
+>NOTE: `output: 'ts'` might not work on other targets than `ios` and `android`.
 
 ## Setting Up Mobile Platforms
 
