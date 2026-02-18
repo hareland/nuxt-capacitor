@@ -39,7 +39,7 @@ template/pnpm-lock.yaml
 .history
 
 # Starters
-.starters/default/pnpm-lock.yaml
+.starters/*/capacitor.config.json
 .starters/default/pnpm-workspace.yaml
 .starters/i18n/pnpm-lock.yaml
 .starters/i18n/pnpm-workspace.yaml
