@@ -14,6 +14,8 @@ export default defineNuxtConfig({
     config: {
       appId: 'com.example.playground',
       appName: 'Nuxt Capacitor Playground',
+      // this is required for the electron community plugin to read the config
+      electron: {},
     },
   },
 })
