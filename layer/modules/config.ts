@@ -1,4 +1,4 @@
-import { createResolver, defineNuxtModule, addTemplate, addTypeTemplate } from '@nuxt/kit'
+import { createResolver, defineNuxtModule } from '@nuxt/kit'
 import { readPackageJSON, type PackageJson } from 'pkg-types'
 import { packageIsInstalled } from '../utils/meta'
 import type { CapacitorConfig } from '@capacitor/cli'
