@@ -59,7 +59,7 @@ pnpx nuxi@latest module add nuxt-capacitor
    pnpm create nuxt@latest -t github:hareland/nuxt-capacitor/.starters/minimal
    ```
     
-    ### [Konsta UI](https://konstaui.com/vue) starter
+   ### [Konsta UI](https://konstaui.com/vue) starter
    ```bash
    pnpm create nuxt@latest -t github:hareland/nuxt-capacitor/.starters/konsta-ui
    ```
