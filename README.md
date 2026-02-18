@@ -1,6 +1,6 @@
 # nuxt-capacitor
 
-A Nuxt module that automatically generates `capacitor.config.ts`, injects your dev server URL, and handles asset
+A Nuxt module that automatically generates `capacitor.config.json` / `capacitor.config.ts`, injects your dev server URL, and handles asset
 generation - so you can focus on building, not configuring.
 
 > **Note:** This module does not install Capacitor or its platform dependencies. You'll need to set those up yourself -
