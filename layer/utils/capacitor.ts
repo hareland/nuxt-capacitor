@@ -21,16 +21,7 @@ export const upsertCapacitorJsonConfig = async (nuxt: Nuxt) => {
   // @ts-expect-error Not typed...
   const config = (nuxt.options?.capacitor?.config || {}) as CapacitorConfig
   const configFile = join(nuxt.options.rootDir, 'capacitor.config.json')
-  if (!existsSync(configFile)) {
-    writeFileSync(configFile, JSON.stringify(config, null, 2), 'utf-8')
-    return
-  }
-
-  const { server, ...oldContent } = JSON.parse(readFileSync(configFile, 'utf-8'))
-
-  const merged = defu(oldContent, config)
-
-  writeFileSync(configFile, JSON.stringify(merged, null, 2), 'utf-8')
+  writeFileSync(configFile, JSON.stringify(config, null, 2), 'utf-8')
 }
 
 export const createCapacitorTsConfig = async (nuxt: Nuxt) => {
