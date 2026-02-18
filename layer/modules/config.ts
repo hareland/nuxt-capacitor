@@ -15,10 +15,19 @@ import {
   upsertCapacitorJsonConfig,
 } from '../utils/capacitor'
 
+type CapConfig = CapacitorConfig & {
+  electron?: {
+    customUrlScheme?: string
+    backgroundColor?: string
+    trayIconAndMenuEnabled?: boolean
+    safeDomains?: string[]
+    [key: string]: unknown
+  }
+}
 interface NuxtCapacitorOptions {
   autoSync?: boolean
   output?: 'json' | 'ts'
-  config?: CapacitorConfig & { electron?: { customUrlScheme?: string, trayIconAndMenuEnabled?: boolean, backgroundColor?: string } }
+  config?: CapConfig
 }
 
 declare module '@nuxt/schema' {
