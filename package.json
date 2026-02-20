@@ -1,7 +1,7 @@
 {
   "name": "nuxt-capacitor-workspace",
   "description": "A layer for building nuxt apps with capacitor",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "license": "MIT",
   "repository": {
     "type": "git",
