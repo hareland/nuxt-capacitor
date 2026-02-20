@@ -85,7 +85,7 @@ pnpx nuxi@latest module add nuxt-capacitor
 ---
 
 
-## Before running on a platform (electron)
+## Before running on a platform (Electron !!)
 
 ```bash
 pnpm i && cd electron && npm i && cd ..
