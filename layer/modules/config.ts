@@ -4,7 +4,7 @@ import { packageIsInstalled } from '../utils/meta'
 import type { CapacitorConfig } from '@capacitor/cli'
 import defu from 'defu'
 import { withLeadingSlash, withoutTrailingSlash } from 'ufo'
-import { existsSync } from 'node:fs'
+import { existsSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { consola } from 'consola'
 import { execSync } from 'node:child_process'
@@ -14,6 +14,7 @@ import {
   hasAnyCapacitorConfigFile,
   upsertCapacitorJsonConfig,
 } from '../utils/capacitor'
+import { patchElectronPackageJson } from '../utils/electron'
 
 type CapConfig = CapacitorConfig & {
   electron?: {
@@ -101,6 +102,24 @@ export default defineNuxtModule<NuxtCapacitorOptions>({
 
     const capacitorConfigFile = hasAnyCapacitorConfigFile(nuxt)
     if (thisModuleDir !== rootDir) {
+      // Ensure we patch the install for electron
+      const electronPath = join(rootDir, 'electron')
+      const electronPackageJsonPath = join(electronPath, 'package.json')
+      const hasElectronInstall = existsSync(electronPackageJsonPath)
+      const electronPackageJson = await readPackageJSON(electronPackageJsonPath)
+
+      if (hasElectronInstall && !electronPackageJson.scripts?.postinstall) {
+        const updatedPackageJson = await patchElectronPackageJson(electronPackageJson)
+        await writeFileSync(electronPackageJsonPath, JSON.stringify(updatedPackageJson, null, 2))
+      }
+      // With a postinstall, user got to add themselves...
+      else if (!electronPackageJson.scripts?.postinstall?.includes('node node_modules/electron/install.js')) {
+        console.warn(
+          `electron package.json(at ${electronPackageJsonPath}) has "postinstall" script, but does not include the install... Add it manually to your package.json to ensure electron is installed correctly: '"postinstall": "node node_modules/electron/install.js"'`,
+        )
+      }
+
+      // Handle capacitor configs
       if (nuxt.options.capacitor.output === 'json') {
         await upsertCapacitorJsonConfig(nuxt)
       }

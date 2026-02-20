@@ -24,3 +24,6 @@ logs
 !.env.example
 
 ios
+electron/**
+!electron/src/**
+capacitor.config.json

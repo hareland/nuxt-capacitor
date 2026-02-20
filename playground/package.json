@@ -4,14 +4,12 @@
   "private": true,
   "scripts": {
     "prepare": "nuxt prepare",
-    "dev": "nuxt dev --extends nuxt-capacitor",
-    "build": "nuxt build --extends nuxt-capacitor",
+    "dev": "nuxt dev",
+    "build": "nuxt build",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "mobile": "nuxt generate && cap sync",
-    "mobile:ios": "pnpm mobile && cap open ios",
-    "mobile:android": "pnpm mobile && cap open android"
+    "clean": "rm -rf node_modules .output .nuxt"
   },
   "dependencies": {
     "@capacitor-community/electron": "^5.0.1",

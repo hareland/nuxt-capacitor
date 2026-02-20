@@ -5,5 +5,6 @@
   <main>
     <NuxtRouteAnnouncer />
     <NuxtWelcome />
+    Hello
   </main>
 </template>

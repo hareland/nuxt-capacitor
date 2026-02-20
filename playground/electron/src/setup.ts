@@ -137,7 +137,7 @@ export class ElectronCapacitorApp {
     this.mainWindowState.manage(this.MainWindow)
 
     if (this.CapacitorFileConfig.backgroundColor) {
-      this.MainWindow.setBackgroundColor(this.CapacitorFileConfig.electron.backgroundColor)
+      this.MainWindow.setBackgroundColor(this.CapacitorFileConfig?.electron?.backgroundColor || this.CapacitorFileConfig.backgroundColor)
     }
 
     // If we close the main window with the splashscreen enabled we need to destory the ref.
@@ -233,17 +233,24 @@ export class ElectronCapacitorApp {
 }
 
 // Set a CSP up for our application based on the custom scheme
-export function setupContentSecurityPolicy(customScheme: string): void {
+export function setupContentSecurityPolicy(customScheme: string, config = {}): void {
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
     callback({
       responseHeaders: {
         ...details.responseHeaders,
-        'Content-Security-Policy': [
-          electronIsDev
-            ? `default-src ${customScheme}://* 'unsafe-inline' devtools://* 'unsafe-eval' data: http://localhost:* ws://localhost:*; style-src ${customScheme}://* 'unsafe-inline' http://localhost:*; script-src ${customScheme}://* 'unsafe-inline' 'unsafe-eval' devtools://* http://localhost:*; connect-src ${customScheme}://* http://localhost:* ws://localhost:*`
-            : `default-src ${customScheme}://* 'unsafe-inline' data:; connect-src ${customScheme}://* http://localhost`,
-        ],
+        //@ts-expect-error This is existing.
+        'Content-Security-Policy': buildCspString(customScheme, config?.electron?.safeDomains ?? []),
       },
     })
   })
 }
+
+const buildCspString = (customScheme: string, safeDomains: string[]): string => {
+  const scheme = `${customScheme}://*`;
+  const extras = safeDomains.map(d => d.startsWith('http') ? d : `https://${d}`).join(' ');
+  const extrasStr = extras ? ` ${extras}` : '';
+
+  return electronIsDev
+    ? `default-src ${scheme} 'unsafe-inline' devtools://* 'unsafe-eval' data: http://localhost:* ws://localhost:*${extrasStr}; style-src ${scheme} 'unsafe-inline' http://localhost:*; script-src ${scheme} 'unsafe-inline' 'unsafe-eval' devtools://* http://localhost:*; connect-src ${scheme} http://localhost:* ws://localhost:*${extrasStr}`
+    : `default-src ${scheme} 'unsafe-inline' data:${extrasStr}; connect-src ${scheme} http://localhost${extrasStr}`;
+};
