@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.0](https://github.com/hareland/nuxt-capacitor/compare/v0.1.6...v0.2.0) (2026-02-20)
+
+### Features
+
+* **konsta-ui:** add dark/light theme toggle and update navbar style ([06c8774](https://github.com/hareland/nuxt-capacitor/commit/06c877436b8b8ddc251400da98cb67ff2727167e))
+
 ## [0.1.6](https://github.com/hareland/nuxt-capacitor/compare/v0.1.5...v0.1.6) (2026-02-18)
 
 ### Features
