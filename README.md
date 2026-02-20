@@ -22,6 +22,7 @@ generation - so you can focus on building, not configuring.
 
 Before using this module, make sure you have the following installed in your project:
 
+
 ```bash
 # Core Capacitor CLI and runtime
 pnpm add @capacitor/core @capacitor/cli
@@ -82,6 +83,14 @@ pnpx nuxi@latest module add nuxt-capacitor
 </details>
 
 ---
+
+
+## Before running on a platform (electron)
+
+```bash
+pnpm i && cd electron && npm i && cd ..
+```
+
 
 ## Usage
 
