@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.1](https://github.com/hareland/nuxt-capacitor/compare/v0.2.0...v0.2.1) (2026-02-20)
+
+### Features
+
+* **electron:** Install ([c706244](https://github.com/hareland/nuxt-capacitor/commit/c706244ed2b2f9ffe5c6cd1b4e17202a2b9a956d))
+
 ## [0.2.0](https://github.com/hareland/nuxt-capacitor/compare/v0.1.6...v0.2.0) (2026-02-20)
 
 ### Features
