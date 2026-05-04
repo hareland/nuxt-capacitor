@@ -17,9 +17,9 @@
     "@capacitor/cli": "^8.1.0",
     "@capacitor/core": "^8.1.0",
     "@capacitor/ios": "^8.1.0",
-    "nuxt": "^4.3.1",
+    "nuxt": "^4.4.4",
     "nuxt-capacitor": "workspace:*",
-    "vue": "^3.5.28",
+    "vue": "^3.5.33",
     "vue-router": "^4.6.4"
   }
 }
