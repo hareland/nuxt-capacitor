@@ -3,10 +3,11 @@ import type { Nuxt } from '@nuxt/schema'
 import type { CapacitorConfig } from '@capacitor/cli'
 import { join } from 'node:path'
 import { existsSync, writeFileSync } from 'node:fs'
+import { createJiti } from 'jiti'
 
 const name = 'nuxt-capacitor'
 
-const capacitorConfigFiles = ['capacitor.config.json', 'capacitor.config.ts', 'capacitor.config.mjs'] as const
+const capacitorConfigFiles = ['capacitor.config.json', 'capacitor.config.ts', 'capacitor.config.js', 'capacitor.config.mjs'] as const
 
 export const hasAnyCapacitorConfigFile = (nuxt: Nuxt): typeof capacitorConfigFiles[number] | false => {
   for (const file of capacitorConfigFiles) {
@@ -15,6 +16,23 @@ export const hasAnyCapacitorConfigFile = (nuxt: Nuxt): typeof capacitorConfigFil
     }
   }
   return false
+}
+
+/**
+ * Load a capacitor.config.ts / .js / .mjs file using jiti and return the
+ * default export. Returns null if no JS/TS config file is present.
+ */
+export const loadCapacitorConfigFile = async (nuxt: Nuxt): Promise<CapacitorConfig | null> => {
+  const jsConfigFiles = ['capacitor.config.ts', 'capacitor.config.js', 'capacitor.config.mjs'] as const
+  for (const file of jsConfigFiles) {
+    const filePath = join(nuxt.options.rootDir, file)
+    if (existsSync(filePath)) {
+      const jiti = createJiti(import.meta.url)
+      const mod = await jiti.import(filePath, { default: true }) as CapacitorConfig
+      return mod ?? null
+    }
+  }
+  return null
 }
 export const upsertCapacitorJsonConfig = async (nuxt: Nuxt) => {
   // @ts-expect-error Not typed...

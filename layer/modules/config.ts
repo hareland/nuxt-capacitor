@@ -12,6 +12,7 @@ import {
   addCodeTemplates,
   createCapacitorTsConfig,
   hasAnyCapacitorConfigFile,
+  loadCapacitorConfigFile,
   upsertCapacitorJsonConfig,
 } from '../utils/capacitor'
 import { patchElectronPackageJson } from '../utils/electron'
@@ -81,6 +82,14 @@ export default defineNuxtModule<NuxtCapacitorOptions>({
 
     nuxt.options.capacitor = defu(nuxt.options.capacitor, _options)
 
+    // Load and merge any existing capacitor.config.ts / .js / .mjs file so
+    // that user-defined TS/JS config files are respected.
+    const existingFileConfig = await loadCapacitorConfigFile(nuxt)
+    if (existingFileConfig) {
+      logger.info('Loaded capacitor config from file.')
+      nuxt.options.capacitor.config = defu(nuxt.options.capacitor.config, existingFileConfig)
+    }
+
     // Inject dev server
     if (nuxt.options.dev) {
       logger.info('Using devServer.url for capacitor server config.')
@@ -123,8 +132,11 @@ export default defineNuxtModule<NuxtCapacitorOptions>({
       if (nuxt.options.capacitor.output === 'json') {
         await upsertCapacitorJsonConfig(nuxt)
       }
-      else if (!existsSync(join(rootDir, 'capacitor.config.ts')) && nuxt.options.capacitor.output === 'ts' && capacitorConfigFile === 'capacitor.config.ts') {
-        await createCapacitorTsConfig(nuxt)
+      else if (nuxt.options.capacitor.output === 'ts') {
+        if (!existsSync(join(rootDir, 'capacitor.config.ts'))) {
+          await createCapacitorTsConfig(nuxt)
+        }
+        // else: capacitor.config.ts already exists and was loaded via loadCapacitorConfigFile
       }
       else {
         logger.warn(`Unhandled capacitor config file "${capacitorConfigFile}"`)
