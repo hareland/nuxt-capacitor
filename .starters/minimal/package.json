@@ -15,14 +15,14 @@
     "clean": "git clean -fd"
   },
   "dependencies": {
-    "@capacitor/core": "^8.1.0",
+    "@capacitor/core": "^8.3.1",
     "nuxt": "^4.4.4",
     "nuxt-capacitor": "latest",
     "vue": "^3.5.33",
     "vue-router": "^4.6.4"
   },
   "devDependencies": {
-    "@capacitor/cli": "^8.1.0",
+    "@capacitor/cli": "^8.3.1",
     "@types/node": "^24.1.0",
     "@nuxt/eslint": "1.15.1",
     "eslint": "^9.39.2",
