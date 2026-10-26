@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.3.1](https://github.com/hareland/nuxt-capacitor/compare/v0.2.1...v0.3.1) (2026-10-26)
+
+### Features
+
+* fix capacitor config output, upgrade deps, streamline setup ([58961ba](https://github.com/hareland/nuxt-capacitor/commit/58961bae2b9c2c2961ac8a5741f40d51697c0180))
+
 ## [0.2.1](https://github.com/hareland/nuxt-capacitor/compare/v0.2.0...v0.2.1) (2026-02-20)
 
 ### Features
