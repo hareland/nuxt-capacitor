@@ -1,7 +1,8 @@
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineNuxtConfig({
-  modules: ['nuxt-capacitor', '@nuxtjs/color-mode'],
+  modules: ['nuxt-capacitor', '@nuxtjs/color-mode', '@nuxt/eslint'],
+  build: { transpile: ['konsta'] },
   devtools: { enabled: false },
   app: {
     head: {

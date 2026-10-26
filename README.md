@@ -85,7 +85,9 @@ pnpx nuxi@latest module add nuxt-capacitor
 ---
 
 
-## Before running on a platform (Electron !!)
+## Before running on Electron
+
+Electron is an npm project in `electron/` (created by `npx cap add electron`). Install it once:
 
 ```bash
 pnpm i && cd electron && npm i && cd ..
@@ -136,20 +138,19 @@ export default defineNuxtConfig({
 
 ## Config file
 
-The module uses `capacitor.config.json` by default (preferred, since it requires no transpiling or build step).
+The module generates the Capacitor config from `nuxt.config.ts > capacitor.config` on every `nuxt dev` / `nuxt build` / `nuxt prepare`. The generated file is
+self-contained (it does not import from `.nuxt/`), so `npx cap ...` works on a fresh checkout. **Don't edit it and git-ignore it**; change
+`nuxt.config.ts` instead.
 
-On first run, if no config file exists in your project root, the module creates one for you:
-```json
-{
-  "appId": "com.example.app",
-  "appName": "Nuxt Capacitor",
-  "webDir": "<rootDir>/.output/public"
-}
-```
+Choose the format with `output`:
 
-This file is automatically kept in sync with your `nuxt.config.ts` capacitor settings on each build/run.
+| `output`          | File                    |
+|-------------------|-------------------------|
+| `json` (default)  | `capacitor.config.json` |
+| `ts`              | `capacitor.config.ts`   |
+| `js`              | `capacitor.config.js`   |
+| `mjs`             | `capacitor.config.mjs`  |
 
-If you prefer TypeScript, set `output: 'ts'` in your module config:
 ```ts
 export default defineNuxtConfig({
   capacitor: {
@@ -158,15 +159,8 @@ export default defineNuxtConfig({
 })
 ```
 
-This will generate a `capacitor.config.ts` instead:
-```ts
-import { defineCapacitorConfig } from './.nuxt/capacitor.mjs';
-
-export default defineCapacitorConfig({
-  // Add your overrides here, or configure via nuxt.config.ts > capacitor: {}
-});
-```
->NOTE: `output: 'ts'` might not work on other targets than `ios` and `android`.
+If a config file in another format already exists, the module warns because Capacitor only picks one of them.
+>NOTE: Electron (`@capacitor-community/electron`) may only read the `json` format.
 
 ## Setting Up Mobile Platforms
 
@@ -222,6 +216,7 @@ npx cap open android # Opens Android Studio
 
 | Option     | Type              | Default   | Description                                                                                                 |
 |------------|-------------------|-----------|-------------------------------------------------------------------------------------------------------------|
+| `output`   | `'json' \| 'ts' \| 'js' \| 'mjs'` | `'json'` | Format of the generated Capacitor config file                                                               |
 | `autoSync` | `boolean`         | `true`    | Runs `nuxt generate` + `npx cap sync` automatically on dev start and after production builds                |
 | `config`   | `CapacitorConfig` | See below | Passed directly to Capacitor - supports all [Capacitor config options](https://capacitorjs.com/docs/config) |
 
@@ -231,7 +226,7 @@ Default `config` values set by the module:
 export default {
   appId: 'com.example.app',
   appName: 'Nuxt Capacitor',
-  webDir: '<rootDir>/.output/public', // auto-set from Nuxt output dir
+  webDir: '.output/public', // auto-set from Nuxt output dir
   // In dev mode, also injects:
   server: {
     url: '<devServer.url>',
