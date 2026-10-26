@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.3.3](https://github.com/hareland/nuxt-capacitor/compare/v0.3.2...v0.3.3) (2026-10-26)
+
+### Bug Fixes
+
+* import defineNuxtConfig in the layer config so it type-checks in consumers ([1f968d3](https://github.com/hareland/nuxt-capacitor/commit/1f968d322b784e55391fc80afbfaf21ffa682471))
+
 ## [0.3.2](https://github.com/hareland/nuxt-capacitor/compare/v0.3.1...v0.3.2) (2026-10-26)
 
 ### Features
