@@ -12,20 +12,23 @@
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "clean": "git clean -fd"
+    "clean": "rm -rf node_modules .nuxt .output",
+    "cap:sync": "cap sync",
+    "cap:ios": "cap run ios",
+    "cap:android": "cap run android"
   },
   "dependencies": {
-    "@capacitor/core": "^8.1.0",
-    "nuxt": "^4.3.1",
+    "@capacitor/core": "^8.5.3",
+    "nuxt": "^4.6.2",
     "nuxt-capacitor": "latest",
-    "vue": "^3.5.28",
+    "vue": "^3.5.44",
     "vue-router": "^4.6.4"
   },
   "devDependencies": {
-    "@capacitor/cli": "^8.1.0",
+    "@capacitor/cli": "^8.5.3",
     "@types/node": "^24.1.0",
-    "@nuxt/eslint": "1.15.1",
-    "eslint": "^9.39.2",
+    "@nuxt/eslint": "^1.17.0",
+    "eslint": "^10.13.0",
     "typescript": "^5.9.3"
   }
 }

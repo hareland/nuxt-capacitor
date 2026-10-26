@@ -10,23 +10,34 @@
   "private": false,
   "scripts": {
     "prepare": "nuxt prepare layer",
-    "dev:prepare": "nuxt prepare playground --extends ../layer",
-    "dev": "pnpm dev --filter playground",
+    "postinstall": "pnpm dev:prepare",
+    "dev:prepare": "nuxt prepare playground",
+    "dev": "pnpm --filter playground dev",
+    "build": "pnpm --filter playground build --prerender",
     "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "typecheck": "nuxt typecheck layer",
+    "test": "vitest run",
+    "clean": "pnpm --filter playground clean",
     "layer:release": "release-it --config .release-it.layer.json",
     "release": "pnpm run layer:release && release-it"
   },
   "devDependencies": {
-    "@nuxt/eslint": "^1.15.1",
-    "@nuxt/eslint-config": "^1.15.1",
-    "@release-it/bumper": "^7.0.5",
-    "@release-it/conventional-changelog": "^10.0.5",
-    "eslint": "^10.0.0",
-    "nuxt": "^4.3.1",
-    "release-it": "^19.2.4",
+    "@capacitor/cli": "^8.5.3",
+    "@nuxt/eslint": "^1.17.0",
+    "@nuxt/eslint-config": "^1.17.0",
+    "@release-it/bumper": "^8.0.1",
+    "@release-it/conventional-changelog": "^12.0.2",
+    "@types/node": "^24.1.0",
+    "eslint": "^10.13.0",
+    "nuxt": "^4.6.2",
+    "release-it": "^21.1.1",
     "typescript": "^5.9.3",
-    "vue-tsc": "^3.2.4",
-    "@capacitor/cli": "^8.1.0"
+    "vitest": "^4.0.0",
+    "vue-tsc": "^3.3.13"
+  },
+  "packageManager": "pnpm@12.11.2",
+  "engines": {
+    "node": ">=22"
   }
 }

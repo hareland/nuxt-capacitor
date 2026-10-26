@@ -43,3 +43,8 @@ template/pnpm-lock.yaml
 .starters/*/ios
 .starters/*/android
 .starters/*/electron
+# Generated capacitor config (from nuxt.config.ts)
+capacitor.config.json
+capacitor.config.ts
+capacitor.config.js
+capacitor.config.mjs

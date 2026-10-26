@@ -3,16 +3,15 @@ import { readPackageJSON, type PackageJson } from 'pkg-types'
 import { packageIsInstalled } from '../utils/meta'
 import type { CapacitorConfig } from '@capacitor/cli'
 import defu from 'defu'
-import { withLeadingSlash, withoutTrailingSlash } from 'ufo'
 import { existsSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { consola } from 'consola'
 import { execSync } from 'node:child_process'
 import {
-  addCodeTemplates,
-  createCapacitorTsConfig,
-  hasAnyCapacitorConfigFile,
-  upsertCapacitorJsonConfig,
+  findConflictingConfigFiles,
+  resolveConfigFileName,
+  writeCapacitorConfig,
+  type CapacitorConfigOutput,
 } from '../utils/capacitor'
 import { patchElectronPackageJson } from '../utils/electron'
 
@@ -27,13 +26,16 @@ type CapConfig = CapacitorConfig & {
 }
 interface NuxtCapacitorOptions {
   autoSync?: boolean
-  output?: 'json' | 'ts'
+  output?: CapacitorConfigOutput
   config?: CapConfig
 }
 
 declare module '@nuxt/schema' {
   interface NuxtOptions {
     capacitor: NuxtCapacitorOptions
+  }
+  interface NuxtHooks {
+    'nuxt-capacitor:config': (options: NuxtCapacitorOptions) => void | Promise<void>
   }
 }
 
@@ -76,7 +78,7 @@ export default defineNuxtModule<NuxtCapacitorOptions>({
     ])
 
     if (!projectPkg.has('@capacitor/cli') && !(await packageIsInstalled('@capacitor/cli'))) {
-      throw new Error('@capacitor/cli is not installed.')
+      throw new Error(`[${name}] @capacitor/cli is not installed. Run: pnpm add -D @capacitor/cli && pnpm add @capacitor/core`)
     }
 
     nuxt.options.capacitor = defu(nuxt.options.capacitor, _options)
@@ -92,50 +94,46 @@ export default defineNuxtModule<NuxtCapacitorOptions>({
       })
     }
     else {
-      delete nuxt.options.capacitor.config?.server
+      if (nuxt.options.capacitor.config?.server) {
+        delete nuxt.options.capacitor.config.server.url
+      }
     }
 
     // Fallback webDir
     nuxt.options.capacitor.config = defu(nuxt.options.capacitor.config, {
-      webDir: withoutTrailingSlash(nuxt.options.rootDir) + withLeadingSlash(distPath),
+      webDir: distPath,
     })
 
-    const capacitorConfigFile = hasAnyCapacitorConfigFile(nuxt)
     if (thisModuleDir !== rootDir) {
       // Ensure we patch the install for electron
-      const electronPath = join(rootDir, 'electron')
-      const electronPackageJsonPath = join(electronPath, 'package.json')
-      const hasElectronInstall = existsSync(electronPackageJsonPath)
-      const electronPackageJson = await readPackageJSON(electronPackageJsonPath)
+      const electronPackageJsonPath = join(rootDir, 'electron', 'package.json')
+      if (existsSync(electronPackageJsonPath)) {
+        const electronPackageJson = await readPackageJSON(electronPackageJsonPath)
+        if (!electronPackageJson.scripts?.postinstall) {
+          const updatedPackageJson = await patchElectronPackageJson(electronPackageJson)
+          writeFileSync(electronPackageJsonPath, JSON.stringify(updatedPackageJson, null, 2))
+        }
+        // With a postinstall, user got to add themselves...
+        else if (!electronPackageJson.scripts.postinstall.includes('node node_modules/electron/install.js')) {
+          logger.warn(
+            `electron package.json (at ${electronPackageJsonPath}) has a "postinstall" script without the electron install. Add it manually to ensure electron is installed correctly: '"postinstall": "node node_modules/electron/install.js"'`,
+          )
+        }
+      }
 
-      if (hasElectronInstall && !electronPackageJson.scripts?.postinstall) {
-        const updatedPackageJson = await patchElectronPackageJson(electronPackageJson)
-        await writeFileSync(electronPackageJsonPath, JSON.stringify(updatedPackageJson, null, 2))
+      // Generate the capacitor config file
+      const { output, config } = nuxt.options.capacitor
+      const conflicts = findConflictingConfigFiles(rootDir, output!)
+      if (conflicts.length) {
+        logger.warn(`Found ${conflicts.join(', ')} next to the generated ${resolveConfigFileName(output!)}. Capacitor will pick only one of them, remove the extra file(s).`)
       }
-      // With a postinstall, user got to add themselves...
-      else if (!electronPackageJson.scripts?.postinstall?.includes('node node_modules/electron/install.js')) {
-        console.warn(
-          `electron package.json(at ${electronPackageJsonPath}) has "postinstall" script, but does not include the install... Add it manually to your package.json to ensure electron is installed correctly: '"postinstall": "node node_modules/electron/install.js"'`,
-        )
-      }
-
-      // Handle capacitor configs
-      if (nuxt.options.capacitor.output === 'json') {
-        await upsertCapacitorJsonConfig(nuxt)
-      }
-      else if (!existsSync(join(rootDir, 'capacitor.config.ts')) && nuxt.options.capacitor.output === 'ts' && capacitorConfigFile === 'capacitor.config.ts') {
-        await createCapacitorTsConfig(nuxt)
-      }
-      else {
-        logger.warn(`Unhandled capacitor config file "${capacitorConfigFile}"`)
-      }
+      writeCapacitorConfig(rootDir, output!, config as CapacitorConfig)
     }
 
-    addCodeTemplates(nuxt)
+    await nuxt.callHook('nuxt-capacitor:config', nuxt.options.capacitor)
 
     // Auto sync
     if (nuxt.options.capacitor.autoSync) {
-      //
       const requiredFile = `${distPath}/index.html`
       const capSync = (scope = 'listen') => async () => {
         if (!existsSync(join(rootDir, requiredFile))) {
@@ -143,28 +141,29 @@ export default defineNuxtModule<NuxtCapacitorOptions>({
           return
         }
         try {
-          let syncMessage = `npx cap sync`
-          execSync('npx cap sync', { stdio: 'inherit', cwd: rootDir })
+          const commands = ['npx cap sync']
           if (existsSync(join(rootDir, 'electron/package.json'))) {
-            execSync('npx cap sync electron', { stdio: 'inherit', cwd: rootDir })
-            syncMessage = ` && npx cap sync electron`
+            commands.push('npx cap sync electron')
           }
-          logger.success(`${syncMessage} completed on ${scope}.`)
+          for (const command of commands) {
+            execSync(command, { stdio: 'inherit', cwd: rootDir })
+          }
+          logger.success(`${commands.join(' && ')} completed on ${scope}.`)
         }
         catch (err) {
           logger.error(err)
         }
       }
 
-      //
       if (nuxt.options.dev) {
-        // nuxt.hook('listen', capSync('listen'))
         nuxt.hook('build:done', async () => {
           logger.info('🔨 Running generate for initial Capacitor assets...')
           try {
             if (!existsSync(join(rootDir, distPath, 'index.html'))) {
               execSync('npx nuxt generate', { cwd: rootDir, stdio: 'ignore' })
               logger.success(`Generated static pages into ${distPath}`)
+              // The generate child process wrote the production config (no dev server url), restore ours.
+              writeCapacitorConfig(rootDir, nuxt.options.capacitor.output!, nuxt.options.capacitor.config as CapacitorConfig)
             }
             await capSync('build:done')()
           }
