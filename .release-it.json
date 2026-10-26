@@ -1,20 +1,27 @@
 {
+  "$schema": "https://unpkg.com/release-it/schema/release-it.json",
   "git": {
-    "requireCleanWorkingDir": false,
+    "requireCleanWorkingDir": true,
+    "requireBranch": "main",
     "commitMessage": "chore(version): release v${version}",
-    "tagName": "v${version}"
+    "tagName": "v${version}",
+    "push": true
   },
   "github": {
     "release": true,
-    "releaseName": "v${version}",
-    "web": true
+    "releaseName": "v${version}"
   },
   "npm": {
-    "publish": false,
-    "allowSameVersion": true,
-    "ignoreVersion": true
+    "publish": false
+  },
+  "hooks": {
+    "before:init": ["pnpm lint", "pnpm typecheck", "pnpm test"],
+    "after:release": "bash ./scripts/npm-publish.sh"
   },
   "plugins": {
+    "@release-it/bumper": {
+      "out": "./layer/package.json"
+    },
     "@release-it/conventional-changelog": {
       "preset": {
         "name": "conventionalcommits"
@@ -24,4 +31,4 @@
       "ignoreRecommendedBump": true
     }
   }
-} 
+}

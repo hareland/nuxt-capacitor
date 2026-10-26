@@ -1,0 +1,95 @@
+# Bumps the version, creates the GitHub release and publishes `nuxt-capacitor`
+# (the `layer/` package) to npm using release-it.
+#
+# Triggered manually so a maintainer picks the kind of version bump. npm
+# publishing uses Trusted Publishing (OIDC), so no npm token is needed: add this
+# repo and workflow (`release.yml`) as a trusted publisher on npmjs.com.
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      increment:
+        description: Version increment
+        required: true
+        type: choice
+        default: patch
+        options:
+          - patch
+          - minor
+          - major
+          - prepatch
+          - preminor
+          - premajor
+          - prerelease
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    name: Bump version, create GitHub release, and publish to npm
+    runs-on: ubuntu-latest
+    permissions:
+      # Push the version commit/tag and create the GitHub release.
+      contents: write
+      # Mint the OIDC token for npm Trusted Publishing.
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v4
+
+      # `registry-url` is omitted on purpose: it makes setup-node write an
+      # `.npmrc` with an unresolved `_authToken` placeholder, which turns a
+      # failed OIDC exchange into a confusing 404.
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      # If a previous run tagged a version but the npm publish failed (e.g.
+      # trusted publishing not configured yet), publish that tag instead of
+      # bumping again.
+      - name: Detect incomplete release
+        id: recovery
+        run: |
+          version="$(node -p "require('./layer/package.json').version")"
+          name="$(node -p "require('./layer/package.json').name")"
+          tag="v$version"
+
+          if git rev-parse --verify --quiet "refs/tags/$tag" >/dev/null &&
+             ! npm view "$name@$version" version >/dev/null 2>&1; then
+            echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check out tagged release
+        if: steps.recovery.outputs.tag != ''
+        env:
+          RELEASE_TAG: ${{ steps.recovery.outputs.tag }}
+        run: git checkout --detach "$RELEASE_TAG"
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      # Trusted publishing needs a recent npm CLI.
+      - run: npm install -g npm@latest
+
+      - name: Resume npm publish
+        if: steps.recovery.outputs.tag != ''
+        run: bash ./scripts/npm-publish.sh
+
+      # The GitHub release is created with GITHUB_TOKEN, which doesn't trigger
+      # other workflows, so release-it publishes to npm itself via the
+      # `after:release` hook.
+      - name: Release
+        if: steps.recovery.outputs.tag == ''
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: pnpm exec release-it ${{ inputs.increment }} --ci

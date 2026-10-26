@@ -10,7 +10,7 @@ Guide for AI coding agents and humans working in this repo. If `package.json` or
 | `playground/` | Nuxt app that consumes the layer via `workspace:*`; used for manual testing (Electron/iOS/Android folders are generated and git-ignored) |
 | `.starters/` | Standalone templates (`minimal`, `konsta-ui`) used by `pnpm create nuxt -t github:hareland/nuxt-capacitor/.starters/<name>`. Not part of the workspace; each has its own lockfile |
 | `test/` | Vitest tests for `layer/utils` |
-| `.release-it*.json` | Release flow (root = GitHub release + changelog, layer = npm publish) |
+| `.release-it.json`, `scripts/npm-publish.sh`, `.github/workflows/release.yml` | Release flow: manually dispatched workflow runs release-it (bump root + `layer/` versions, changelog, tag, GitHub release), then publishes `layer/` to npm via OIDC trusted publishing |
 
 The list of starters lives in the root `README.md`.
 
@@ -39,7 +39,7 @@ Node version is in `.nvmrc`; pnpm version is pinned via `packageManager`.
 | `pnpm typecheck` | `nuxt typecheck layer` |
 | `pnpm test` | Vitest |
 | `pnpm clean` | Remove playground `node_modules`, `.nuxt`, `.output` |
-| `pnpm release` | Release (layer to npm, then GitHub release + changelog) |
+| `pnpm release` | Release locally (same as the workflow; prefer running the **Release** workflow from the Actions tab) |
 
 ## Module conventions (`layer/`)
 

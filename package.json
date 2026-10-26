@@ -19,8 +19,7 @@
     "typecheck": "nuxt typecheck layer",
     "test": "vitest run",
     "clean": "pnpm --filter playground clean",
-    "layer:release": "release-it --config .release-it.layer.json",
-    "release": "pnpm run layer:release && release-it"
+    "release": "release-it"
   },
   "devDependencies": {
     "@capacitor/cli": "^8.5.3",
