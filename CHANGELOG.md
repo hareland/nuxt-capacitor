@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.3.2](https://github.com/hareland/nuxt-capacitor/compare/v0.3.1...v0.3.2) (2026-10-26)
+
+### Features
+
+* add automatic release workflow ([c6ed2e2](https://github.com/hareland/nuxt-capacitor/commit/c6ed2e25ce7a83211731e540df391a2d7ae0bfd8))
+
 ## [0.3.1](https://github.com/hareland/nuxt-capacitor/compare/v0.2.1...v0.3.1) (2026-10-26)
 
 ### Features
